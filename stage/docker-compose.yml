@@ -1,0 +1,54 @@
+db:
+  image: "mysql"
+  ports:
+    - "3306:3306"
+  environment:
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_DATABASE: customer
+    MYSQL_USER: admin
+    MYSQL_PASSWORD: admin
+  volumes_from:
+    - mysqldata
+web:
+  image: 10.0.0.5/nginx
+  volumes_from:
+    - app
+  ports:
+    - "8080:80"
+  links:
+    - phpfpm
+
+phpfpm:
+  image: 10.0.0.5/php-fpm
+  links:
+    - db
+  volumes_from:
+    - app
+
+composer:
+  image: composer/composer
+  volumes_from:
+    - app
+  working_dir: /var/www/app
+  command: install
+
+app:
+  image: busybox
+  volumes:
+    - ./app:/var/www/app
+    - .env-dev:/var/www/app/.env
+  command: /bin/true
+
+mysqldata:
+  image: busybox
+  volumes:
+    - /var/lib/mysql
+  command: /bin/true
+
+artisan:
+  image: dylanlindgren/docker-laravel-artisan
+  volumes_from:
+    - app
+  links:
+    - db
+  working_dir: /var/www/app

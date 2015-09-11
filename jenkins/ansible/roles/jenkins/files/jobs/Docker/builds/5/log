@@ -1,0 +1,38 @@
+Started by user [8mha:AAAAlh+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAzOEgYu/dLi1CL9vNKcHACFIKlWvwAAAA==[0manonymous
+Building remotely on [8mha:AAAAmx+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAzWEgZ+/eT83ILSktQifZ/85MQcAKyxGIjEAAAA[0mLocal (docker) in workspace /data/jenkins/slaves/local/workspace/Docker
+[Docker] $ /bin/sh -xe /tmp/hudson4806040922392047363.sh
++ sudo docker build -t stitch/hello-node:v0 /vagrant/app/
+Sending build context to Docker daemon 557.1 kBSending build context to Docker daemon 1.114 MBSending build context to Docker daemon 1.671 MBSending build context to Docker daemon 2.228 MBSending build context to Docker daemon 2.785 MBSending build context to Docker daemon 3.342 MBSending build context to Docker daemon 3.899 MBSending build context to Docker daemon 4.456 MBSending build context to Docker daemon 4.632 MB
+Sending build context to Docker daemon 
+Step 0 : FROM node:0.10
+ ---> 5e46edb4da0d
+Step 1 : MAINTAINER Christopher Reitz
+ ---> Using cache
+ ---> 961ded674ed5
+Step 2 : RUN mkdir -p /app
+ ---> Using cache
+ ---> 5266f5c57a81
+Step 3 : WORKDIR /app
+ ---> Using cache
+ ---> 1629d9cefc4a
+Step 4 : ADD . /app
+ ---> Using cache
+ ---> 63f5ff7ad9db
+Step 5 : EXPOSE 3000
+ ---> Using cache
+ ---> 91ff30fa2f3f
+Step 6 : CMD node app.js
+ ---> Using cache
+ ---> 66ad0f832e9c
+Successfully built 66ad0f832e9c
++ sudo docker run --rm -w /app stitch/hello-node:v0 ./node_modules/mocha/bin/mocha ./test/test.js
+
+  [90m․[0m
+
+[92m [0m[32m 1 passing[0m[90m (38ms)[0m
+
++ sudo docker push localhost:5000/hello-node:v0
+The push refers to a repository [localhost:5000/hello-node] (len: 1)
+Repository does not exist: localhost:5000/hello-node
+Build step 'Execute shell' marked build as failure
+Finished: FAILURE

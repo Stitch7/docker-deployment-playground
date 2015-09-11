@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<slave>
+  <name>Local</name>
+  <description>Local Vagrant Machine</description>
+  <remoteFS>/data/jenkins/slaves/local</remoteFS>
+  <numExecutors>1</numExecutors>
+  <mode>NORMAL</mode>
+  <retentionStrategy class="hudson.slaves.RetentionStrategy$Always"/>
+  <launcher class="hudson.plugins.sshslaves.SSHLauncher" plugin="ssh-slaves@1.9">
+    <host>172.17.42.1</host>
+    <port>22</port>
+    <credentialsId>0ef10f67-70fd-4f9d-a591-6c644b5a7412</credentialsId>
+    <maxNumRetries>0</maxNumRetries>
+    <retryWaitTime>0</retryWaitTime>
+  </launcher>
+  <label>docker</label>
+  <nodeProperties/>
+  <userId>anonymous</userId>
+</slave>

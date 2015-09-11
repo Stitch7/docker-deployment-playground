@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.nirima.jenkins.plugins.docker.DockerJobProperty plugin="docker-plugin@0.8">
+      <tagOnCompletion>false</tagOnCompletion>
+      <additionalTag></additionalTag>
+      <pushOnSuccess>false</pushOnSuccess>
+      <cleanImages>false</cleanImages>
+    </com.nirima.jenkins.plugins.docker.DockerJobProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <assignedNode>Local</assignedNode>
+  <canRoam>false</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>rm -rf docker-test
+
+git clone https://github.com/Stitch7/docker-test.git
+
+cd docker-test
+
+chmod +x build/*.sh
+
+# build
+./build/build-images.sh
+rc=$?
+if [[ $rc != 0 ]] ; then
+    echo -e &quot;Docker images build failed.&quot;
+    exit $rc
+fi
+echo -e &quot;Docker images build passed successfully.&quot;
+
+# test
+./build/run-tests.sh
+rc=$?
+if [[ $rc != 0 ]] ; then
+    echo -e &quot;Tests failed.&quot;
+    exit $rc
+fi
+echo -e &quot;Tests passed successfully. Pushing images to our repository.&quot;
+
+# push
+./build/push-to-repo.sh
+rc=$?
+if [[ $rc != 0 ]] ; then
+    echo -e &quot;Push failed.&quot;
+    exit $rc
+fi
+echo -e &quot;Tested image pushed successfully to our repository.&quot;</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>sudo ansible-playbook -i &quot;54.164.139.173,&quot; --private-key ~/.ssh/Ansible.pem --extra-vars &quot;build=v$BUILD_NUMBER&quot; /vagrant/ansible/ec2.yml</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

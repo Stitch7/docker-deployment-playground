@@ -1,0 +1,22 @@
+Vagrant.configure("2") do |config|
+    config.vm.box = "bytepark/trusty-64"
+    config.vm.hostname = "velo-easy-stage"
+    config.vm.network :private_network, ip: "10.0.0.7"
+    config.vm.network :forwarded_port, guest: 22, host: 2227, id: 'ssh'
+    #config.vm.network :forwarded_port, guest: 80, host: 80800
+    config.vm.network :forwarded_port, guest: 3306, host: 33061
+    config.vm.provision "shell", path: "provision.sh"
+    config.vm.synced_folder ".", "/vagrant", id: "vagrant-root",
+        :nfs => true,
+        :mount_options => ["intr", "noatime", "nolock"],
+        :linux__nfs_options => ["all_squash", "async", "no_subtree_check", "rw"],
+        :bsd__nfs_options => ["alldirs", "async", "no_subtree_check", "rw"]
+    config.vm.provider :virtualbox do |vb|
+        vb.customize [
+            "modifyvm", :id,
+            "--memory", "1024",
+            "--cpus", 2
+        ]
+    end
+
+end
